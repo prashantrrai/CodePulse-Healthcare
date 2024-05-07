@@ -9,6 +9,5 @@ namespace CodePulse.API.Data
 
 
         public DbSet<PatientDetail> PatientDetails { get; set; }
-        public DbSet<Login> Login { get; set; }
     }
 }

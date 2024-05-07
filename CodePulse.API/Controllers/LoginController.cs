@@ -25,20 +25,13 @@ namespace CodePulse.API.Controllers
         {
             try
             {
-                var credentials = new Login
+                var credentials = new LoginRequestDto
                 {
                     Email = request.Email,
                     Password = request.Password,
                 };
 
-                await loginRepository.Login(credentials);
-
-                var response = new Login
-                {
-                    Email = credentials.Email,
-                    Result = credentials.Result,
-                    Token = credentials.Token
-                };
+                var response = await loginRepository.Login(credentials);
 
                 return Ok(response);
             }

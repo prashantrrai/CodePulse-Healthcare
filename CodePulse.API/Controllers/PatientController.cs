@@ -30,6 +30,7 @@ namespace CodePulse.API.Controllers
                     Name = request.Name,
                     Age = request.Age,
                     Email = request.Email,
+                    Password = request.Password,
                     Phone = request.Phone,
                     Address = request.Address
                 };
@@ -44,6 +45,7 @@ namespace CodePulse.API.Controllers
                     Name = patient.Name,
                     Age = patient.Age,
                     Email = patient.Email,
+                    Password = patient.Password,
                     Phone = patient.Phone,
                     Address = patient.Address
                 };

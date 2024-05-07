@@ -1,6 +1,7 @@
 ﻿using CodePulse.API.Data;
-using CodePulse.API.Domain.Models;
+using CodePulse.API.Domain.DTOs.Request;
 using CodePulse.API.Repositories.Interface;
+using Microsoft.EntityFrameworkCore;
 
 namespace CodePulse.API.Repositories.Implementation
 {
@@ -13,9 +14,25 @@ namespace CodePulse.API.Repositories.Implementation
             this.dbcontext = dbcontext;
         }
 
-        public Task<Login> Login(Login login)
+        public async Task<bool> Login(LoginRequestDto credentials)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var data = await dbcontext.PatientDetails.FirstOrDefaultAsync(x => x.Email == credentials.Email);
+
+
+                if (data == null)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
     }
 }
