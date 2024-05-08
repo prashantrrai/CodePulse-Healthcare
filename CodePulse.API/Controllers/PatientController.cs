@@ -65,7 +65,7 @@ namespace CodePulse.API.Controllers
         {
             try
             {
-                var result = await patientRepository.GetAsync();
+                var result = await patientRepository.GetAllAsync();
                 return Ok(result);
             }
             catch (Exception ex)

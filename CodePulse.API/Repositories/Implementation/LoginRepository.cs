@@ -1,5 +1,7 @@
 ﻿using CodePulse.API.Data;
 using CodePulse.API.Domain.DTOs.Request;
+using CodePulse.API.Domain.DTOs.Response;
+using CodePulse.API.Domain.Models;
 using CodePulse.API.Repositories.Interface;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,25 +16,47 @@ namespace CodePulse.API.Repositories.Implementation
             this.dbcontext = dbcontext;
         }
 
-        public async Task<bool> Login(LoginRequestDto credentials)
+        public async Task<LoginResponseDto> Login(LoginRequestDto credentials)
         {
             try
             {
-                var data = await dbcontext.PatientDetails.FirstOrDefaultAsync(x => x.Email == credentials.Email);
+                var patient = await dbcontext.PatientDetails.FirstOrDefaultAsync(x => x.Email == credentials.Email && x.Password == credentials.Password);
 
-
-                if (data == null)
+                if (patient == null)
                 {
-                    return false;
+                    return new LoginResponseDto
+                    {
+                        Success = false,
+                        Message = "Invalid email or password",
+                        Data = null
+                    };
                 }
 
-                return true;
+                var loginResponse = MapPatientToLoginResponse(patient);
+                return new LoginResponseDto
+                {
+                    Success = true,
+                    Message = "Login successful",
+                    Data = loginResponse
+                };
             }
             catch (Exception ex)
             {
-
+                Console.WriteLine($"An error occurred: {ex.Message}");
                 throw;
             }
+        }
+
+        private LoginResponseDataDto MapPatientToLoginResponse(PatientDetail patient)
+        {
+            return new LoginResponseDataDto
+            {
+                Name = patient.Name,
+                Email = patient.Email,
+                RoleId = patient.RoleId,
+                IsActive = patient.IsActive,
+                Token = patient.Token,
+            };
         }
     }
 }

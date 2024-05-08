@@ -1,6 +1,7 @@
 ﻿using CodePulse.API.Data;
 using CodePulse.API.Domain.Models;
 using CodePulse.API.Repository.Interface;
+using Microsoft.EntityFrameworkCore;
 
 namespace CodePulse.API.Repository.Implementation
 {
@@ -22,9 +23,9 @@ namespace CodePulse.API.Repository.Implementation
             return patient;
         }
 
-        public async Task<PatientDetail> GetAsync()
+        public async Task<List<PatientDetail>> GetAllAsync()
         {
-            var result = await dbcontext.PatientDetails.FindAsync();
+            var result = await dbcontext.PatientDetails.ToListAsync();
 
             return result;
         }
