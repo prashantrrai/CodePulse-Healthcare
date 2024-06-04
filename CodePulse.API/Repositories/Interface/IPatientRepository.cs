@@ -4,7 +4,10 @@ namespace CodePulse.API.Repository.Interface
 {
     public interface IPatientRepository
     {
-        Task<PatientDetail> CreateAsync(PatientDetail patient);
-        Task<List<PatientDetail>> GetAllAsync();  
+        Task<Patient> AddPatient(Patient patient);
+        Task<List<Patient>> GetAllPatient();  
+        Task<Patient> GetPatientById(Guid id);  
+        Task<Patient> UpdatePatient(Guid id, Patient patient);  
+        Task<Patient> DeletePatient(Guid id);  
     } 
 }

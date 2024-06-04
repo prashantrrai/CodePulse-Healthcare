@@ -20,7 +20,8 @@ namespace CodePulse.API.Repositories.Implementation
         {
             try
             {
-                var patient = await dbcontext.PatientDetails.FirstOrDefaultAsync(x => x.Email == credentials.Email && x.Password == credentials.Password);
+                //var patient = await dbcontext.Patients.FirstOrDefaultAsync(x => x.Email == credentials.Email && x.Password == credentials.Password);
+                var patient = await dbcontext.Patients.FirstOrDefaultAsync(x => x.Email == credentials.Email);
 
                 if (patient == null)
                 {
@@ -47,15 +48,15 @@ namespace CodePulse.API.Repositories.Implementation
             }
         }
 
-        private LoginResponseDataDto MapPatientToLoginResponse(PatientDetail patient)
+        private LoginResponseDataDto MapPatientToLoginResponse(Patient patient)
         {
             return new LoginResponseDataDto
             {
                 Name = patient.Name,
                 Email = patient.Email,
-                RoleId = patient.RoleId,
+                //RoleId = patient.RoleId,
                 IsActive = patient.IsActive,
-                Token = patient.Token,
+                //Token = patient.Token,
             };
         }
     }

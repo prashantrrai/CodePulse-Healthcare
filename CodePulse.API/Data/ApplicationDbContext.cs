@@ -8,6 +8,7 @@ namespace CodePulse.API.Data
         public ApplicationDbContext(DbContextOptions options) : base(options) { }
 
 
-        public DbSet<PatientDetail> PatientDetails { get; set; }
+
+        public DbSet<Patient> Patients { get; set; }
     }
 }

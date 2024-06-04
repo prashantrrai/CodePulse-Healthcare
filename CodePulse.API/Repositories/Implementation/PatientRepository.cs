@@ -1,6 +1,7 @@
 ﻿using CodePulse.API.Data;
 using CodePulse.API.Domain.Models;
 using CodePulse.API.Repository.Interface;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace CodePulse.API.Repository.Implementation
@@ -15,19 +16,98 @@ namespace CodePulse.API.Repository.Implementation
         }
 
 
-        public async Task<PatientDetail> CreateAsync(PatientDetail patient)
-        {
-            await dbcontext.PatientDetails.AddAsync(patient);
-            await dbcontext.SaveChangesAsync();
 
-            return patient;
+
+        public async Task<Patient> AddPatient(Patient patient)
+        {
+            try
+            {
+                await dbcontext.Patients.AddAsync(patient);
+                await dbcontext.SaveChangesAsync();
+                return patient;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
 
-        public async Task<List<PatientDetail>> GetAllAsync()
+        public async Task<List<Patient>> GetAllPatient()
         {
-            var result = await dbcontext.PatientDetails.ToListAsync();
+            try
+            {
+                var patient = await dbcontext.Patients.ToListAsync();
+                return patient;
+            }
+            catch (Exception ex)
+            {
 
-            return result;
+                throw;
+            }
+        }
+
+        public async Task<Patient> GetPatientById(Guid id)
+        {
+            try
+            {
+                var patient = await dbcontext.Patients.FindAsync(id);
+                if (patient is null)
+                {
+                    return null;
+                }
+                return patient;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<Patient> UpdatePatient(Guid id, Patient patient)
+        {
+            try
+            {
+                var existingPatient = await dbcontext.Patients.FindAsync(id);
+                if (existingPatient is null)
+                {
+                    throw new KeyNotFoundException($"Patient with ID {id} not found.");
+                }
+
+                existingPatient.Name = patient.Name;
+                existingPatient.Age = patient.Age;
+                existingPatient.Email = patient.Email;
+                existingPatient.Phone = patient.Phone;
+                existingPatient.Address = patient.Address;
+                existingPatient.IsActive = true;
+                await dbcontext.SaveChangesAsync();
+                return existingPatient;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public async Task<Patient> DeletePatient(Guid id)
+        {
+            try
+            {
+                var patient = await dbcontext.Patients.FindAsync(id);
+                if (patient is null)
+                {
+                    throw new KeyNotFoundException($"Patient with ID {id} not found.");
+                }
+                dbcontext.Patients.Remove(patient);
+                await dbcontext.SaveChangesAsync();
+                return patient;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
     }
 }

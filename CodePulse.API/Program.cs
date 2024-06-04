@@ -15,12 +15,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 //---------------------------Adding Database Connection String ----------------------------//
-var connection_url = builder.Configuration.GetConnectionString("CodePulseConnectionString");
+var connection_url = builder.Configuration.GetConnectionString("DBConnectionString");
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connection_url));
 
 //---------------------------Injecting the Repository--------------------------------------//
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
-builder.Services.AddScoped<ILoginRepository, LoginRepository>();
+//builder.Services.AddScoped<ILoginRepository, LoginRepository>();
 
 var app = builder.Build();
 
@@ -32,6 +32,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
 app.UseAuthorization();
 
